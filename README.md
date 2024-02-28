@@ -29,6 +29,11 @@ And also here is a list of tools and libraries that can be useful while reverse 
 - [Javassist](https://www.javassist.org/)
 - [ASM](https://asm.ow2.io/)
 - [ByteBuddy](https://bytebuddy.net/)
-- [Recaf](https://www.cuchazinteractive.com/recaf.html)
+- [Recaf-v2](https://github.com/Col-E/Recaf)
+- [Recaf-v3](https://github.com/Col-E/Recaf/tree/dev3)
+- [Recaf-v4](https://github.com/Col-E/Recaf/tree/dev4)
+- [Deobfuscator](https://github.com/narumii/Deobfuscator)
+- [deobfuscator-gui](https://github.com/java-deobfuscator/deobfuscator-gui)
+- [jvm-manual](https://github.com/WalmartSolutions/jvm-manual)
 
 Please note that reverse engineering can be a complex topic, and it's important to use these skills responsibly and ethically. Always respect copyright laws and the terms of use of any software you're working with.

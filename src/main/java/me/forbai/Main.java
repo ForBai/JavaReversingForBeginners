@@ -16,15 +16,12 @@ import java.util.Base64;
 public class Main {
 
     public static void main(String[] args) {
-        System.out.println(getHWID());
-        System.out.println(decrypt("kw9GDVdlzrAzti65rjjNOMYXX76ViwnXtkzqafUjsXBJ69QtRD0qm1FrQDxyUFq/mgH8anOVYBUd7k+n9puycmpJOo6FVYn8cQODCAZ02Mc=", String.valueOf(Main.class.getProtectionDomain().getCodeSource().getLocation().getPath().hashCode())));
         try {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JDialog dialog = createDialog();
-        dialog.setVisible(true);
+        createDialog().setVisible(true);
     }
 
     private static JDialog createDialog() {
@@ -41,6 +38,61 @@ public class Main {
 
         dialog.add(panel);
         return dialog;
+    }
+
+    private static JButton createSubmitButton(JTextField textField, JDialog dialog) {
+        JButton button = new JButton("Submit");
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setBackground(Color.GRAY);
+        button.addActionListener(e -> {
+            try {
+                String[] splitKey = getSplitKey();
+                String encryptionToken = splitKey[0];
+//                String hwid = splitKey[1].replaceAll("\"", ""); // hwid remote check not implemented currently
+                String licenseKey = splitKey[1];
+
+                String doubleDecryptedEncryptionToken = decrypt(encryptionToken, getHWID());
+                System.out.println("doubleDecryptedEncryptionToken: " + doubleDecryptedEncryptionToken);
+                String doubleDecryptedLicenseKey = decrypt(licenseKey, getHWID());
+                String decryptedLicenseKey = decrypt(doubleDecryptedLicenseKey, doubleDecryptedEncryptionToken);
+                System.out.println("decryptedLicenseKey: " + decryptedLicenseKey);
+
+                if (textField.getText().equals(decryptedLicenseKey)) {
+                    dialog.dispose();
+                    JOptionPane.showMessageDialog(null, "Correct license key!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Incorrect license key!");
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
+        });
+        return button;
+    }
+
+    private static String[] getSplitKey() throws Exception {
+        URL url = new URL("https://raw.githubusercontent.com/ForBai/JavaReversingForBeginners/main/wantedkeyfromurl.txt");
+        HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        String[] splitKey = reader.readLine().split("-");
+        reader.close();
+        return splitKey;
+    }
+
+    private static String getHWID() {
+        return "justsomehwididk";
+//        return String.valueOf((
+//                System.getProperty("os.name") +
+//                        System.getProperty("os.version") +
+//                        System.getProperty("os.arch") +
+//                        System.getProperty("user.home") +
+//                        System.getProperty("java.version") +
+//                        System.getProperty("java.vendor") +
+//                        System.getenv("PROCESSOR_IDENTIFIER") +
+//                        System.getenv("COMPUTERNAME") +
+//                        System.getProperty("user.name")
+//        ).hashCode());
     }
 
     private static String encrypt(String strToEncrypt, String secret) {
@@ -70,48 +122,4 @@ public class Main {
         }
         return null;
     }
-
-    private static String getHWID() {
-        return String.valueOf((System.getProperty("os.name") +
-                System.getProperty("os.version") +
-                System.getProperty("os.arch") +
-                System.getProperty("user.home") +
-                System.getProperty("java.version") +
-                System.getProperty("java.vendor") +
-                System.getenv("PROCESSOR_IDENTIFIER") +
-                System.getenv("COMPUTERNAME") +
-                System.getProperty("user.name")).hashCode());
-    }
-
-    private static JButton createSubmitButton(JTextField textField, JDialog dialog) {
-        JButton button = new JButton("Submit");
-        button.setFont(new Font("Arial", Font.BOLD, 14));
-        button.setBackground(Color.GRAY);
-        button.addActionListener(e -> {
-            try {
-                URL url = new URL("https://raw.githubusercontent.com/ForBai/JavaReversingForBeginners/main/wantedkeyfromurl.txt");
-                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String[] splitKey = reader.readLine().split("-");
-                reader.close();
-                System.out.println(Arrays.toString(splitKey));
-                String encryptionToken = splitKey[0];
-                String hwid = splitKey[1].replaceAll("\"", "");
-                String licenseKey = splitKey[2];
-
-                if (textField.getText().equals(decrypt(licenseKey, encryptionToken))) {
-                    dialog.dispose();
-                    JOptionPane.showMessageDialog(null, "Correct license key!");
-                } else {
-                    JOptionPane.showMessageDialog(null, "Incorrect license key!");
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                System.exit(-1);
-            }
-        });
-        return button;
-    }
-
-
 }

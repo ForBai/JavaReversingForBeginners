@@ -35,5 +35,7 @@ And also here is a list of tools and libraries that can be useful while reverse 
 - [Deobfuscator](https://github.com/narumii/Deobfuscator)
 - [deobfuscator-gui](https://github.com/java-deobfuscator/deobfuscator-gui)
 - [jvm-manual](https://github.com/WalmartSolutions/jvm-manual)
+- [List of Obfuscators](https://github.com/3000IQPlay/obfuscator-list)
+- [More Tools here](https://github.com/ret42/RE-Thing)
 
 Please note that reverse engineering can be a complex topic, and it's important to use these skills responsibly and ethically. Always respect copyright laws and the terms of use of any software you're working with.

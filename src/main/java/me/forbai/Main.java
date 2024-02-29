@@ -52,10 +52,10 @@ public class Main {
                 String licenseKey = splitKey[1];
 
                 String doubleDecryptedEncryptionToken = decrypt(encryptionToken, getHWID());
-                System.out.println("doubleDecryptedEncryptionToken: " + doubleDecryptedEncryptionToken);
+//                System.out.println("doubleDecryptedEncryptionToken: " + doubleDecryptedEncryptionToken);
                 String doubleDecryptedLicenseKey = decrypt(licenseKey, getHWID());
                 String decryptedLicenseKey = decrypt(doubleDecryptedLicenseKey, doubleDecryptedEncryptionToken);
-                System.out.println("decryptedLicenseKey: " + decryptedLicenseKey);
+//                System.out.println("decryptedLicenseKey: " + decryptedLicenseKey);
 
                 if (textField.getText().equals(decryptedLicenseKey)) {
                     dialog.dispose();

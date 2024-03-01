@@ -31,7 +31,7 @@ public class Main {
         dialog.setSize(400, 200);
 
         JPanel panel = new JPanel();
-        panel.add(new JLabel("Enter your license key:"));
+        panel.add(new JLabel("Enter your password:"));
         JTextField textField = new JTextField(20);
         panel.add(textField);
         panel.add(createSubmitButton(textField, dialog));
@@ -49,19 +49,19 @@ public class Main {
                 String[] splitKey = getSplitKey();
                 String encryptionToken = splitKey[0];
 //                String hwid = splitKey[1].replaceAll("\"", ""); // hwid remote check not implemented currently
-                String licenseKey = splitKey[1];
+                String password = splitKey[1];
 
                 String doubleDecryptedEncryptionToken = decrypt(encryptionToken, getHWID());
 //                System.out.println("doubleDecryptedEncryptionToken: " + doubleDecryptedEncryptionToken);
-                String doubleDecryptedLicenseKey = decrypt(licenseKey, getHWID());
-                String decryptedLicenseKey = decrypt(doubleDecryptedLicenseKey, doubleDecryptedEncryptionToken);
-//                System.out.println("decryptedLicenseKey: " + decryptedLicenseKey);
+                String doubleDecryptedpassword = decrypt(password, getHWID());
+                String decryptedpassword = decrypt(doubleDecryptedpassword, doubleDecryptedEncryptionToken);
+//                System.out.println("decryptedpassword: " + decryptedpassword);
 
-                if (textField.getText().equals(decryptedLicenseKey)) {
+                if (textField.getText().equals(decryptedpassword)) {
                     dialog.dispose();
-                    JOptionPane.showMessageDialog(null, "Correct license key!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Correct password!", "Success", JOptionPane.INFORMATION_MESSAGE);
                 } else {
-                    JOptionPane.showMessageDialog(null, "Incorrect license key!");
+                    JOptionPane.showMessageDialog(null, "Incorrect password!");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
